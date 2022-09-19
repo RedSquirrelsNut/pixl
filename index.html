@@ -1,0 +1,295 @@
+<html>
+
+<head>
+    <link href="http://fonts.cdnfonts.com/css/sf-pixelate" rel="stylesheet">
+    <title>Pixlz Game</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            background: #777;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            overflow: hidden;
+        }
+        /* The slider itself */
+        
+        .slider {
+            -webkit-appearance: none;
+            /* Override default CSS styles */
+            appearance: none;
+            width: 15%;
+            /* Full-width */
+            height: 25px;
+            /* Specified height */
+            background: #9a9a9a;
+            /* Grey background */
+            outline: none;
+            /* Remove outline */
+            opacity: 0.7;
+            /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s;
+            /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+            position: absolute;
+        }
+        /* Mouse-over effects */
+        
+        .slider:hover {
+            opacity: 1;
+            /* Fully shown on mouse-over */
+        }
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            /* Override default look */
+            appearance: none;
+            width: 25px;
+            /* Set a specific slider handle width */
+            height: 25px;
+            /* Slider handle height */
+            background: #aa0404;
+            /* Green background */
+            cursor: pointer;
+            /* Cursor on hover */
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 25px;
+            /* Set a specific slider handle width */
+            height: 25px;
+            /* Slider handle height */
+            background: #aa0404;
+            /* Green background */
+            cursor: pointer;
+            /* Cursor on hover */
+        }
+        
+        #waterLevelRange {
+            top: 70%;
+            left: 84%;
+        }
+        
+        #cloudDensityRange1 {
+            top: 90%;
+            left: 84%;
+        }
+        
+        #cloudDensityRange2 {
+            top: 95%;
+            left: 84%;
+        }
+        
+        #sunHeightRange {
+            top: 80%;
+            left: 84%;
+        }
+        
+        #game-surface {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            /*this is important but may not work
+                on all browsers, should draw scene to texture then use nearest filter*/
+            image-rendering: pixelated;
+        }
+        
+        #resSelectL {
+            text-align: center;
+            font-family: 'SF Pixelate', sans-serif;
+            position: absolute;
+            top: 8px;
+            left: 90%;
+        }
+        
+        #resSelect {
+            font-family: 'SF Pixelate', sans-serif;
+            position: absolute;
+            top: 32px;
+            left: 90%;
+        }
+        
+        #game_text {
+            text-align: center;
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 8px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #tick_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 85%;
+            left: 8px;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #delta_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 80%;
+            left: 8px;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #cam_pos_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 90%;
+            left: 8px;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #cam_rot_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 95%;
+            left: 8px;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #waterLevel_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 65%;
+            left: 84%;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #cloud_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 85%;
+            left: 84%;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #sun_text {
+            /* text-align: center; */
+            z-index: 10001;
+            font-size: 16px;
+            font-family: 'SF Pixelate', sans-serif;
+            /*font-weight: bold;*/
+            top: 75%;
+            left: 84%;
+            /* transform: translate(-50%, -50%); */
+            height: 16px;
+            position: absolute;
+            color: white;
+            user-select: none;
+        }
+        
+        #blink_me {
+            animation: blinker 1.25s linear infinite;
+            text-shadow: 2px 2px black;
+            text-align: center;
+            z-index: 10001;
+            font-size: 32px;
+            font-family: 'SF Pixelate', sans-serif;
+            font-weight: bold;
+            -webkit-text-stroke: 1px black;
+            text-decoration-thickness: 1px;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 32px;
+            position: absolute;
+            color: white;
+            visibility: hidden;
+            user-select: none;
+        }
+        
+        @keyframes blinker {
+            25% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body onload="start();">
+    <!-- width="240" height="160" -->
+    <canvas id="game-surface" width="256" height="144">
+			Your browser does not support HTML5
+		</canvas>
+    <div id="webgl-container">
+        <div class="slidecontainer">
+            <input type="range" min="-100.0" max="100.0" step="0.5" class="slider" id="waterLevelRange">
+            <input type="range" min="0.0" max="10.0" step="0.05" class="slider" id="sunHeightRange">
+            <input type="range" min="0.0" max="1.0" step="0.05" class="slider" id="cloudDensityRange1">
+            <input type="range" min="0.0" max="10.0" step="0.05" class="slider" id="cloudDensityRange2">
+        </div>
+        <label id="resSelectL" for="resSelect">Resolution</label>
+        <select id="resSelect">
+            <option value="0">220x160</option>
+            <option value="1" selected>256x144</option>
+            <option value="2">320x200</option>
+            <option value="3">320x240</option>
+            <option value="4">640x480</option>
+        </select>
+    </div>
+
+    <script id="vertShader" type="x-shader/x-vertex" src="./Shaders/vertexShader.glsl"></script>
+    <!-- Change out the file path below to the desired fragment shader -->
+    <script id="fragShader" type="x-shader/x-fragment" src="./Shaders/marchingShader.glsl"></script>
+
+    <script type="text/javascript" src="./Mesh.js"></script>
+    <script type="text/javascript" src="./Shader.js"></script>
+    <script type="text/javascript" src="./Stats.js"></script>
+    <script type="text/javascript" src="./Timer.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+</body>
+
+</html>
